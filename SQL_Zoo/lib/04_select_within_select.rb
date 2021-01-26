@@ -59,6 +59,15 @@ def richer_than_england
     name
   FROM
     countries
+  WHERE 
+    continent = 'Europe' AND gdp/population > (
+      SELECT
+        gdp/population
+      FROM
+        countries
+      WHERE
+        name = 'United Kingdom' 
+    );
      
 
   SQL
@@ -68,6 +77,28 @@ def neighbors_of_certain_b_countries
   # List the name and continent of countries in the continents containing
   # 'Belize', 'Belgium'.
   execute(<<-SQL)
+  SELECT
+    name, continent
+  FROM 
+    countries
+  WHERE
+    continent = (
+      SELECT 
+        continent
+      FROM
+        countries
+      WHERE
+        name = 'Belize'
+        )
+      OR
+      continent = (
+      SELECT 
+        continent
+      FROM
+        countries
+      WHERE
+        name = 'Belgium'
+    );
   SQL
 end
 
